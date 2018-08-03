@@ -25,11 +25,11 @@ Run your software
     dotenv -f my_custom_env_file exec env
     dotenv -f my_custom_env_file env
 
-# Requirements
+## Requirements
 
 - Ruby (Tested on 2.5.1)
 
-# Setup
+## Setup
 
 The setup is as simple as downloading the binary
 
@@ -44,7 +44,7 @@ You can also create some aliases to avoid typing dotenv every time.
 
     alias be='dotenv bundle exec'
 
-# Environment integrations
+## Environment integrations
 
 Dotenv uses `RAILS_ENV` or `ENV` environment variable to load correct environment file.
 
@@ -56,10 +56,10 @@ For example for `RAILS_ENV=development` or `ENV=development` it will load in ord
 
 Default environment is `development`.
 
-# Notes
+## Notes
 
 Unlike normal dotenv, it is possible to override already set environment variables.
 
-# Licence
+## Licence
 
 MIT
