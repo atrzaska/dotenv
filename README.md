@@ -4,18 +4,18 @@ Dotenv is a application to load your dotenv files from current working directory
 
 Examples:
 
-  # add environment variables in the env viles of your project
+Add environment variables in the env viles of your project
 
-   touch .env
-   touch .env.test
-   touch .env.development
-   touch .env.preview
-   touch .env.staging
-   touch .env.production
-   touch .env.local
+    touch .env
+    touch .env.test
+    touch .env.development
+    touch .env.preview
+    touch .env.staging
+    touch .env.production
+    touch .env.local
 
-   # run some command
+Run your software
 
-   dotenv env
-   dotenv test bundle exec rspec
-   dotenv bundle exec rails s
+    dotenv env
+    dotenv test bundle exec rspec
+    dotenv bundle exec rails s
