@@ -19,6 +19,9 @@ Run your software
     dotenv env
     dotenv test bundle exec rspec
     dotenv bundle exec rails s
+    dotenv exec env
+    dotenv -f my_custom_env_file exec env
+    dotenv -f my_custom_env_file env
 
 # Requirements
 
