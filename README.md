@@ -2,11 +2,11 @@
 
 Dotenv is a application to load your dotenv files from current working directory into environment and provide environment variables to other programs.
 
-The software was designed to help load env variables in Rails applications, but is not limited to Rails.
+The software was designed to help load environment variables in Rails applications, but is not limited to Rails.
 
 ## Examples:
 
-Add environment variables in the env viles of your project
+Add environment variables in the `.env` files of your project
 
     touch .env
     touch .env.test
@@ -38,21 +38,23 @@ The setup is as simple as downloading the binary
     ./dotenv
 
 
-Ideally you should add dotenv to your PATH env var or move it to some location in PATH. That will make using the program a lot easier.
+Ideally you should add dotenv to your PATH environment variable or move it to some location in PATH. That will make using the program a lot easier.
 
 You can also create some aliases to avoid typing dotenv every time.
 
     alias be='dotenv bundle exec'
 
-# Rails integrations
+# Environment integrations
 
-Dotenv uses `RAILS_ENV` env var to load correct environment file.
+Dotenv uses `RAILS_ENV` or `ENV` environment variable to load correct environment file.
 
-For example for `RAILS_ENV=development` it will load in order:
+For example for `RAILS_ENV=development` or `ENV=development` it will load in order:
 
 - `.env`
 - `.env.development`
 - `.env.local`
+
+Default environment is `development`.
 
 # Notes
 

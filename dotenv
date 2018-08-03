@@ -59,7 +59,7 @@ else
 end
 
 
-env ||= ENV['RAILS_ENV'] || 'development'
+env ||= ENV['RAILS_ENV'] || ENV['ENV'] || 'development'
 env_file = ".env.#{env}"
 
 load_dotenv(file)
