@@ -2,7 +2,7 @@
 
 Dotenv is a application to load your dotenv files from current working directory into environment and provide environment variables to other programs.
 
-Examples:
+## Examples:
 
 Add environment variables in the env viles of your project
 
