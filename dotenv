@@ -1,0 +1,69 @@
+#!/usr/bin/env ruby
+
+ENVS = %w(production test development staging preview).freeze
+
+def file_passed?
+ ARGV[0] == '-f'
+end
+
+def env_passed?
+  ENVS.include?(ARGV[0])
+end
+
+def args_from(index)
+  ARGV[index..-1].join(' ')
+end
+
+def exec_arg?(index)
+  ARGV[index] == 'exec'
+end
+
+def load_dotenv(file)
+  return unless file
+  return unless File.exists?(file)
+
+  text = File.read(file)
+
+  text.lines.each do |line|
+    line = line.gsub("\n", '')
+
+    next if line.length.zero?
+    next if line[0] == '#'
+
+    k, v = line.split('=')
+    ENV[k] = v
+  end
+end
+
+if file_passed?
+  file = ARGV[1]
+  if exec_arg?(2)
+    command = args_from(3)
+  else
+    command = args_from(2)
+  end
+elsif env_passed?
+  env = ARGV[0]
+  if exec_arg?(1)
+    command = args_from(2)
+  else
+    command = args_from(1)
+  end
+else
+  file = '.env'
+  if exec_arg?(0)
+    command = args_from(1)
+  else
+    command = args_from(0)
+  end
+end
+
+
+env ||= ENV['RAILS_ENV'] || 'development'
+env_file = ".env.#{env}"
+
+load_dotenv(file)
+load_dotenv(env_file)
+load_dotenv('.env.local')
+
+exec command
