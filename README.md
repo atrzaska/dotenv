@@ -37,7 +37,6 @@ The setup is as simple as downloading the binary
     chmod +x dotenv
     ./dotenv
 
-
 Ideally you should add dotenv to your PATH environment variable or move it to some location in PATH. That will make using the program a lot easier.
 
 You can also create some aliases to avoid typing dotenv every time.
@@ -53,6 +52,7 @@ For example for `RAILS_ENV=development` or `ENV=development` it will load in ord
 - `.env`
 - `.env.development`
 - `.env.local`
+- `.env.development.local`
 
 Default environment is `development`.
 

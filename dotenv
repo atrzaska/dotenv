@@ -61,9 +61,11 @@ end
 
 env ||= ENV['RAILS_ENV'] || ENV['ENV'] || 'development'
 env_file = ".env.#{env}"
+local_env_file = "#{env_file}.local"
 
 load_dotenv(file)
 load_dotenv(env_file)
 load_dotenv('.env.local')
+load_dotenv(local_env_file)
 
 exec command
