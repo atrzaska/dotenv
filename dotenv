@@ -68,4 +68,8 @@ load_dotenv(env_file)
 load_dotenv('.env.local')
 load_dotenv(local_env_file)
 
-exec command
+if command != ''
+  exec command
+else
+  puts 'dotenv: exec needs a command to run'
+end

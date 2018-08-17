@@ -15,6 +15,11 @@ Add environment variables in the `.env` files of your project
     touch .env.staging
     touch .env.production
     touch .env.local
+    touch .env.test.local
+    touch .env.development.local
+    touch .env.preview.local
+    touch .env.staging.local
+    touch .env.production.local
 
 Run your software
 
@@ -58,7 +63,15 @@ Default environment is `development`.
 
 ## Notes
 
+### Override environment variables
+
 Unlike normal dotenv, it is possible to override already set environment variables.
+
+### Comments
+
+It is possible to comment out some environment variables in dotfiles. To comment out a variable, use the `#` character:
+
+    # NODE_ENV=development
 
 ## Licence
 
