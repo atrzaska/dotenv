@@ -50,7 +50,7 @@ You can also create some aliases to avoid typing dotenv every time.
 
 ## Environment integrations
 
-Dotenv uses `RAILS_ENV` or `ENV` environment variable to load correct environment file.
+Dotenv uses `RAILS_ENV` **or** `ENV` environment variable to load correct environment file.
 
 For example for `RAILS_ENV=development` or `ENV=development` it will load in order:
 
@@ -65,13 +65,29 @@ Default environment is `development`.
 
 ### Override environment variables
 
-Unlike normal dotenv, it is possible to override already set environment variables.
+Unlike normal dotenv, it is **possible to override** already set environment variables.
 
 ### Comments
 
-It is possible to comment out some environment variables in dotfiles. To comment out a variable, use the `#` character:
+It is possible to comment out some environment variables in dotfiles. To comment out a variable, **use the `#` character**:
 
     # NODE_ENV=development
+
+### Exports
+
+To provide copy paste support from shell scripts, **`export` keywords will be ignored**, when reading dotenv files.
+
+With that said, **both versions** of following environment variable definition **will work** just fine:
+
+- Dotenv syntax
+
+
+    NODE_ENV=development
+
+- Shell export syntax
+
+
+    export NODE_ENV=development
 
 ## Licence
 

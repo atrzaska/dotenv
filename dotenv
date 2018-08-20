@@ -25,7 +25,7 @@ def load_dotenv(file)
   text = File.read(file)
 
   text.lines.each do |line|
-    line = line.gsub("\n", '')
+    line = line.gsub("\n", '').gsub('export ', '')
 
     next if line.length.zero?
     next if line[0] == '#'
