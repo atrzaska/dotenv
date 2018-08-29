@@ -31,7 +31,7 @@ def load_dotenv(file)
     next if line[0] == '#'
 
     k, v = line.split('=')
-    ENV[k] = v
+    ENV[k] = v || ''
   end
 end
 
