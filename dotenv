@@ -1,75 +1,132 @@
 #!/usr/bin/env ruby
 
-ENVS = %w(production test development staging preview).freeze
+class Dotenv
+  ALLOWED_ENVS = %w(production test development staging preview qa xingbox dev prod).freeze
+  QUOTES = ["\"", "'"]
+  COMMAND_REGEXP = /\$\((.+)\)/
 
-def file_passed?
- ARGV[0] == '-f'
-end
+  attr_reader :argv, :env, :loaded_vars
 
-def env_passed?
-  ENVS.include?(ARGV[0])
-end
+  def initialize(argv, env)
+    @argv = argv
+    @env = env
+    @loaded_vars = {}
+  end
 
-def args_from(index)
-  ARGV[index..-1].join(' ')
-end
+  def run
+    load_dotenv(file)
+    load_dotenv(env_file)
+    load_dotenv('.env.local')
+    load_dotenv(local_env_file)
+    add_loaded_environment_variables
 
-def exec_arg?(index)
-  ARGV[index] == 'exec'
-end
+    if command != ''
+      exec command
+    else
+      puts 'dotenv: exec needs a command to run'
+    end
+  end
 
-def load_dotenv(file)
-  return unless file
-  return unless File.exists?(file)
+  def command
+    if file_passed?
+      if exec_arg?(2)
+        args_from(3)
+      else
+        args_from(2)
+      end
+    elsif env_passed?
+      if exec_arg?(1)
+        args_from(2)
+      else
+        args_from(1)
+      end
+    else
+      if exec_arg?(0)
+        args_from(1)
+      else
+        args_from(0)
+      end
+    end
+  end
 
-  text = File.read(file)
+  def file
+    file_passed? ? argv[1] : '.env'
+  end
 
-  text.lines.each do |line|
-    line = line.gsub("\n", '').gsub('export ', '')
+  def current_env
+    return argv[0] if env_passed?
 
-    next if line.length.zero?
-    next if line[0] == '#'
+    env['RAILS_ENV'] || env['ENV'] || 'development'
+  end
 
-    k, v = line.split('=')
-    ENV[k] = v || ''
+  def env_file
+    ".env.#{current_env}"
+  end
+
+  def local_env_file
+    "#{env_file}.local"
+  end
+
+  def add_loaded_environment_variables
+    loaded_vars.each { |key, value| env[key] = value }
+  end
+
+  def file_passed?
+   argv[0] == '-f'
+  end
+
+  def env_passed?
+    ALLOWED_ENVS.include?(argv[0])
+  end
+
+  def args_from(index)
+    argv[index..-1].join(' ')
+  end
+
+  def exec_arg?(index)
+    argv[index] == 'exec'
+  end
+
+  def load_dotenv(file)
+    return unless file
+    return unless File.exists?(file)
+
+    text = File.read(file)
+
+    text.lines.each do |line|
+      line = line.gsub("\n", '').gsub('export ', '')
+
+      next if line.length.zero? || line[0] == '#'
+
+      key, value = line.split('=')
+      value ||= ''
+
+      strip_quotes!(value)
+      substitute_commands(value)
+
+      loaded_vars[key] = value || ''
+    end
+  end
+
+  def strip_quotes!(value)
+    strip_quote!(value, 0)
+    strip_quote!(value, -1)
+  end
+
+  def strip_quote!(value, position)
+    value[position] = '' if QUOTES.include?(value[position])
+  end
+
+  def substitute_commands(value)
+    commands = value.scan(COMMAND_REGEXP).flatten
+
+    commands.each do |command|
+      key = "$(#{command})"
+      result = `#{command}`.gsub("\n", '')
+      value.gsub!(key, result)
+    end
   end
 end
 
-if file_passed?
-  file = ARGV[1]
-  if exec_arg?(2)
-    command = args_from(3)
-  else
-    command = args_from(2)
-  end
-elsif env_passed?
-  env = ARGV[0]
-  if exec_arg?(1)
-    command = args_from(2)
-  else
-    command = args_from(1)
-  end
-else
-  file = '.env'
-  if exec_arg?(0)
-    command = args_from(1)
-  else
-    command = args_from(0)
-  end
-end
+Dotenv.new(ARGV, ENV).run
 
-
-env ||= ENV['RAILS_ENV'] || ENV['ENV'] || 'development'
-env_file = ".env.#{env}"
-local_env_file = "#{env_file}.local"
-
-load_dotenv(file)
-load_dotenv(env_file)
-load_dotenv('.env.local')
-load_dotenv(local_env_file)
-
-if command != ''
-  exec command
-else
-  puts 'dotenv: exec needs a command to run'
-end
