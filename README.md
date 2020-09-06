@@ -47,6 +47,7 @@ Ideally you should add dotenv to your PATH environment variable or move it to so
 You can also create some aliases to avoid typing dotenv every time.
 
     alias be='dotenv bundle exec'
+    alias dot=dotenv
 
 ## Environment integrations
 
@@ -82,12 +83,12 @@ With that said, **both versions** of following environment variable definition *
 - Dotenv syntax
 
 
-    NODE_ENV=development
+    `NODE_ENV=development`
 
 - Shell export syntax
 
 
-    export NODE_ENV=development
+    `export NODE_ENV=development`
 
 ## Licence
 
